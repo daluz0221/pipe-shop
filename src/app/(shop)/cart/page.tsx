@@ -12,7 +12,7 @@ const productsInCart = [
 ]
 
 
-export default function (){
+export default function CartPage(){
 
   if (productsInCart.length === 0) {
     redirect('/empty')

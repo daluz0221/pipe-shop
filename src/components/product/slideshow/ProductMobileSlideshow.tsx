@@ -38,7 +38,7 @@ export const ProductMobileSlideshow = ({ images, title, className }:Props) => {
             >
                 {
                     images.map( img => (
-                        <SwiperSlide>
+                        <SwiperSlide key={img}>
                             <Image 
                                 width={600}
                                 height={500}
