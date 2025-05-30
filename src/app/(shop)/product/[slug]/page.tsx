@@ -5,6 +5,7 @@ import { titleFont } from "@/config/fonts";
 import { notFound } from "next/navigation";
 import { getProductBySlug } from '../../../../actions/products/get-product-by-slug';
 import { Metadata, ResolvingMetadata } from "next";
+import { AddToCart } from "./ui/AddToCart";
 
 
 
@@ -76,16 +77,7 @@ export default async function ProductSlugPage({ params }:Props){
           { product.price }
         </p>
 
-        {/* Selector tallas */}
-        <SizeSelector selectedSize={ product.sizes[0] } availableSizes={ product.sizes } />
-
-        {/* Selector cantidad */}
-        <QuantitySelector quantity={2} />
-
-      {/* Button */}  
-      <button className="btn-primary my-5">
-        Agregar al carrito
-      </button>
+      <AddToCart product={ product } />
 
       {/* Description */}
       <h3 className="font-bold text-sm">

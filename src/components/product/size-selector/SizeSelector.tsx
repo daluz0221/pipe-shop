@@ -2,13 +2,15 @@ import type { ValidSizes } from "@/interfaces"
 import clsx from "clsx";
 
 interface Props {
-    selectedSize: ValidSizes;
-    availableSizes: ValidSizes[]
+    selectedSize?: ValidSizes;
+    availableSizes: ValidSizes[];
+
+    onSizeChange: ( size: ValidSizes ) => void
 }
 
 
 
-export const SizeSelector = ({ selectedSize, availableSizes }:Props) => {
+export const SizeSelector = ({ selectedSize, availableSizes, onSizeChange }:Props) => {
 
 
   return (
@@ -20,11 +22,12 @@ export const SizeSelector = ({ selectedSize, availableSizes }:Props) => {
             availableSizes.map( size => (
                 <button 
                     key={ size }
+                    onClick={()=> onSizeChange( size )}
                     className={
                         clsx(
-                            "mx-2 hover:underline text-lg",
+                            "mx-2 hover:bg-blue-200 hover:text-white hover:rounded p-1 text-lg cursor-pointer ",
                             {
-                                'underline': size === selectedSize
+                                'bg-blue-500 text-white rounded p-1': size === selectedSize
                             }
                         )
                     }
