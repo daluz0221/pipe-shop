@@ -28,3 +28,6 @@ export * from './ui/footer/Footer';
 
 
 export * from './ui/pagination/Pagination';
+
+
+export * from './provider/Provider';

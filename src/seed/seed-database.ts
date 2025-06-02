@@ -10,13 +10,20 @@ async function main() {
 
     // Borrar registros previos
     // await Promise.all([
-
+    
+       await prisma.user.deleteMany();
        await prisma.productImage.deleteMany();
        await prisma.product.deleteMany();
        await prisma.category.deleteMany();
     // ]);
 
-    const { categories, products } = initialData;
+    const { categories, products, users } = initialData;
+
+    await prisma.user.createMany({
+        data: users
+    });
+
+
     // Categorias
     const categoriesData = categories.map( cat => ({
         name: cat
