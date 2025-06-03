@@ -2,6 +2,7 @@
 
 import { logout } from "@/actions";
 import { useUiStore } from "@/store";
+import { sleep } from "@/utils";
 import clsx from "clsx";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -23,6 +24,7 @@ export const Sidebar = () => {
 
     const onLogOut = async() => {
         logout()
+        await sleep(0.5)
         window.location.replace('/')
         closeMnu()
     }
