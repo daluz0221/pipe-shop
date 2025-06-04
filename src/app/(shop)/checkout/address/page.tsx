@@ -5,6 +5,7 @@ import { useAddressStore } from '@/store';
 import AddresProvider from './ui/AddresProvider';
 import { sleep } from '@/utils';
 import { auth } from '@/auth.config';
+import { redirect } from 'next/navigation';
 
 export default async function  AddressPage() {
 
@@ -13,9 +14,7 @@ export default async function  AddressPage() {
   const session = await auth();
 
   if (!session?.user){
-    return (
-      <h3 className='text-5xl'>500 - No hay sesión de usuario</h3>
-    )
+    redirect('/auth/login')
   }
 
   const userAddress = await getUserAddress( session.user.id )

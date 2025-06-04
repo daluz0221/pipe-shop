@@ -62,9 +62,9 @@ export const AddressForm = ({ countries, storeAddress, userStoreAddress = {} }:P
 
     const onSubmit = async( data: FormInputs ) => {
       console.log(data.rememberAddress);
-      setAddress( data );
-
+      
       const { rememberAddress, ...restAddress } = data
+      setAddress( restAddress );
 
       if (data.rememberAddress){
         
