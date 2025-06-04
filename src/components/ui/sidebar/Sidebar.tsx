@@ -14,18 +14,19 @@ export const Sidebar = () => {
     const closeMnu = useUiStore(state => state.closeSideMenu);
 
     const { data: session } = useSession();
-    console.log({ session });
+
 
     const isAuthenticated = !!session?.user
-    console.log({ isAuthenticated });
+   
 
     const isAdmin = (session?.user.role === 'admin')
-    console.log({ isAdmin });
+    
 
     const onLogOut = async() => {
         logout()
         await sleep(0.5)
-        window.location.replace('/')
+        window.location.replace('/');
+        
         closeMnu()
     }
 

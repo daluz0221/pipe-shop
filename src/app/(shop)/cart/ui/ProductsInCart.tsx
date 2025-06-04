@@ -1,6 +1,7 @@
 'use client';
 
 import { QuantitySelector } from "@/components";
+import { useHydratedCart } from "@/config";
 import { useCartStore } from "@/store";
 import Image from "next/image";
 import Link from "next/link";
@@ -16,20 +17,18 @@ export const ProductsInCart = () => {
     const productsInCart = useCartStore( state => state.cart );
     const updateProductQuantity = useCartStore( state => state.updateProductQuantity );
     const deleteProduct = useCartStore( state => state.deleteProductQuantity );
+        const hasHydrated = useHydratedCart();
+    
+    if (!hasHydrated) return <p>Cargando...</p>;
 
-    useEffect(() => {
-      setLoaded(true)
-         
-    }, [])
+  
     
     if (productsInCart.length === 0) {
         redirect('/empty')
       }
    
 
-      if ( !loaded){
-        return <p>Loading...</p>
-      }
+   
 
     return (
         <>

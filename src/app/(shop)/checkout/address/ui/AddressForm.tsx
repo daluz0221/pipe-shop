@@ -1,23 +1,93 @@
 'use client';
 
+import { deleteUserAddress, setUserAddress } from "@/actions";
+import { Address, Country } from "@/interfaces";
+import { useAddressStore } from "@/store";
+import clsx from "clsx";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
 
-import Link from "next/link"
+interface FormInputs {
+    firsName: string;
+    lastName: string;
+    address: string;
+    address2?: string;
+    postalCode: string;
+    city: string;
+    country: string;
+    phone: string;
+    rememberAddress: boolean;
+}
+
+interface Props {
+    countries: Country[];
+    storeAddress?: Address;
+    userStoreAddress?: Partial<Address>
+}
+
+export const AddressForm = ({ countries, storeAddress, userStoreAddress = {} }:Props) => {
+
+    const router = useRouter()
+    const { handleSubmit, register, formState: { isValid }, reset } = useForm<FormInputs>({
+        defaultValues: {
+            // TODO: leer de la base de datos
+            ...(userStoreAddress as any),
+            rememberAddress: false
+        }
+    });
+
+    const { data:session } = useSession({
+        required: true
+    });
+
+    const setAddress = useAddressStore( state => state.setAddress );
+    
+
+    
+
+    useEffect(() => {
+        
+        console.log(storeAddress);
+        
+        
+      if( storeAddress?.firsName ){
+        reset( storeAddress );
+
+      }
+    }, [])
+    
 
 
+    const onSubmit = async( data: FormInputs ) => {
+      console.log(data.rememberAddress);
+      setAddress( data );
+
+      const { rememberAddress, ...restAddress } = data
+
+      if (data.rememberAddress){
+        
+        await setUserAddress( restAddress, session!.user.id )
+      } else {
+        
+        await deleteUserAddress( session!.user.id )
+      }
+
+      router.push('/checkout')
 
 
-export const AddressForm = () => {
-
+    }
 
     return (
-        <div className="grid grid-cols-1 gap-2 sm:gap-5 sm:grid-cols-2">
+        <form onSubmit={ handleSubmit( onSubmit ) } className="grid grid-cols-1 gap-2 sm:gap-5 sm:grid-cols-2">
 
 
             <div className="flex flex-col mb-2">
                 <span>Nombres</span>
                 <input
                     type="text"
-                    className="p-2 border rounded-md bg-gray-200"
+                    className="p-2 border rounded-md bg-gray-200" {...register('firsName', { required: true })}
                 />
             </div>
 
@@ -25,7 +95,7 @@ export const AddressForm = () => {
                 <span>Apellidos</span>
                 <input
                     type="text"
-                    className="p-2 border rounded-md bg-gray-200"
+                    className="p-2 border rounded-md bg-gray-200" {...register('lastName', { required: true })}
                 />
             </div>
 
@@ -33,7 +103,7 @@ export const AddressForm = () => {
                 <span>Dirección</span>
                 <input
                     type="text"
-                    className="p-2 border rounded-md bg-gray-200"
+                    className="p-2 border rounded-md bg-gray-200" {...register('address', { required: true })}
                 />
             </div>
 
@@ -41,7 +111,7 @@ export const AddressForm = () => {
                 <span>Dirección 2 (opcional)</span>
                 <input
                     type="text"
-                    className="p-2 border rounded-md bg-gray-200"
+                    className="p-2 border rounded-md bg-gray-200" {...register('address2')}
                 />
             </div>
 
@@ -50,7 +120,7 @@ export const AddressForm = () => {
                 <span>Código postal</span>
                 <input
                     type="text"
-                    className="p-2 border rounded-md bg-gray-200"
+                    className="p-2 border rounded-md bg-gray-200" {...register('postalCode', { required: true })}
                 />
             </div>
 
@@ -58,18 +128,22 @@ export const AddressForm = () => {
                 <span>Ciudad</span>
                 <input
                     type="text"
-                    className="p-2 border rounded-md bg-gray-200"
+                    className="p-2 border rounded-md bg-gray-200" {...register('city', { required: true })}
                 />
             </div>
 
             <div className="flex flex-col mb-2">
                 <span>País</span>
                 <select
-                    className="p-2 border rounded-md bg-gray-200"
+                    className="p-2 border rounded-md bg-gray-200" {...register('country', { required: true })}
                 >
                     <option value="">[ Seleccione ]</option>
-                    <option value="CO">Colombia</option>
-                    <option value="CRI">Costa Rica</option>
+                    {
+                        countries.map( country => (
+
+                            <option key={country.id} value={country.id}>{country.name}</option>
+                        ))
+                    }
                 </select>
             </div>
 
@@ -77,25 +151,25 @@ export const AddressForm = () => {
                 <span>Teléfono</span>
                 <input
                     type="text"
-                    className="p-2 border rounded-md bg-gray-200"
+                    className="p-2 border rounded-md bg-gray-200" {...register('phone', { required: true })}
                 />
             </div>
 
 
 
             <div className="flex flex-col mb-2 sm:mt-1">
-
-
                 <div className="inline-flex items-center mb-10">
                     <label
                         className="relative flex cursor-pointer items-center rounded-full p-3"
                         htmlFor="checkbox"
+                        data-ripple-dark="true"
                     >
                         <input
                             type="checkbox"
+                            {...register('rememberAddress')}
                             className="border-gray-500 before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-blue-500 checked:bg-blue-500 checked:before:bg-blue-500 hover:before:opacity-10"
                             id="checkbox"
-                            checked
+                           
                         />
                         <div className="pointer-events-none absolute top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 text-white opacity-0 transition-opacity peer-checked:opacity-100">
                             <svg
@@ -116,14 +190,25 @@ export const AddressForm = () => {
                     </label>
                     <span>¿Recordar dirección?</span>
                 </div>
-                <Link
-                    href='/checkout'
-                    className="btn-primary flex w-full sm:w-1/2 justify-center ">
+
+                <button
+                    type="submit"
+                    // href='/checkout'
+                    // className="btn-primary flex w-full sm:w-1/2 justify-center "
+                    disabled={ !isValid }
+                    className={
+                        clsx({
+                            'btn-primary': isValid,
+                            'btn-disabled': !isValid,
+                        })
+                    }
+                    >
                     Siguiente
-                </Link>
+                </button>
             </div>
 
 
-        </div>
+        </form>
+
     )
 }
