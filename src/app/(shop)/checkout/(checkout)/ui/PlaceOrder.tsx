@@ -11,25 +11,29 @@ import { useShallow } from "zustand/shallow";
 
 export const PlaceOrder = () => {
 
+
+
     const [loaded, setLoaded] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
     const [isPlacingOrder, setIsPlacingOrder] = useState(false);
 
-    const address = useAddressStore( state => state.address );
-    const { itemsInCart, subTotal, tax, total }= useCartStore( useShallow(state => state.getSummaryInformation()) )
-    const cart = useCartStore( state => state.cart )
+    const address = useAddressStore(state => state.address);
+    const { itemsInCart, subTotal, tax, total } = useCartStore(useShallow(state => state.getSummaryInformation()))
+    const cart = useCartStore(state => state.cart)
+    const clearCart = useCartStore(state => state.clearCart)
 
 
 
     useEffect(() => {
-      setLoaded(true)
+        setLoaded(true)
     }, []);
 
 
-    const onPlaceOrder = async() => {
-        
+    const onPlaceOrder = async () => {
+
         setIsPlacingOrder(true);
 
-        const productsToOder = cart.map( product => ({
+        const productsToOder = cart.map(product => ({
             productId: product.id,
             quantity: product.quantity,
             size: product.size
@@ -38,17 +42,27 @@ export const PlaceOrder = () => {
 
         // console.log({address, productsToOder});
 
-        const resp = await placeOrder( productsToOder, address );
-        console.log({resp});
-        
-        
+        const resp = await placeOrder(productsToOder, address);
+        if (!resp.ok) {
+            setIsPlacingOrder(false);
+            setErrorMessage(resp.message);
+            return;
+        }
+
+        // * Todo salió bien
+        console.log('llego aca');
+
+        clearCart();
+        console.log('y aca');
+        window.location.replace('/orders/' + resp.order!.id);
+
+        console.log('aca igualñ');
 
 
-        setIsPlacingOrder(false)
 
     };
-    
-    if(!loaded){
+
+    if (!loaded) {
         return <p>Cargando...</p>
     }
 
@@ -58,12 +72,12 @@ export const PlaceOrder = () => {
 
             <h2 className="text-2xl font-bold mb-2">Dirección de entrega</h2>
             <div className="mb-10">
-                <p>{ address.firsName } { address.lastName }</p>
-                <p>{ address.address }</p>
-                <p>{ address.address2 }</p>
-                <p>{ address.postalCode }</p>
-                <p>{ address.city }, { address.country }</p>
-                <p>{ address.phone }</p>
+                <p>{address.firsName} {address.lastName}</p>
+                <p>{address.address}</p>
+                <p>{address.address2}</p>
+                <p>{address.postalCode}</p>
+                <p>{address.city}, {address.country}</p>
+                <p>{address.phone}</p>
             </div>
 
             {/* Divider */}
@@ -73,23 +87,23 @@ export const PlaceOrder = () => {
             <h2 className="text-2xl font-bold mb-2">Resumen de orden</h2>
 
             <div className="grid grid-cols-2">
-                 <span>No. Productos</span>
-                            <span className="text-right">
-                                {
-                                    itemsInCart > 1 
-                                    ? `${itemsInCart} Artículos`
-                                    : '1 Artículo'
-                                } 
-                            </span>
-                
-                            <span>Sub Total</span>
-                            <span className="text-right">{ currencyFormat( subTotal ) } </span>
-                
-                            <span>Impuestos</span>
-                            <span className="text-right">{ currencyFormat( tax ) } </span>
-                
-                            <span className="text-2xl mt-5">Total:</span>
-                            <span className="mt-5 text-2xl text-right">{ currencyFormat( total ) }</span>
+                <span>No. Productos</span>
+                <span className="text-right">
+                    {
+                        itemsInCart > 1
+                            ? `${itemsInCart} Artículos`
+                            : '1 Artículo'
+                    }
+                </span>
+
+                <span>Sub Total</span>
+                <span className="text-right">{currencyFormat(subTotal)} </span>
+
+                <span>Impuestos</span>
+                <span className="text-right">{currencyFormat(tax)} </span>
+
+                <span className="text-2xl mt-5">Total:</span>
+                <span className="mt-5 text-2xl text-right">{currencyFormat(total)}</span>
 
             </div>
 
@@ -102,7 +116,7 @@ export const PlaceOrder = () => {
                 </p>
 
                 <p className="text-red-500">
-                    Error de creación
+                    {errorMessage}
                 </p>
                 <button className={
                     clsx({
@@ -110,9 +124,9 @@ export const PlaceOrder = () => {
                         'btn-disabled': isPlacingOrder
                     })
                 }
-                disabled={ isPlacingOrder }
-                // href="/orders/123"
-                onClick={ onPlaceOrder }
+                    disabled={isPlacingOrder}
+                    // href="/orders/123"
+                    onClick={onPlaceOrder}
                 >
                     Colocar orden
                 </button>
