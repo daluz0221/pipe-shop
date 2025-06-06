@@ -32,6 +32,7 @@ export const PayPalButton = ({ orderId, amount }:Props) => {
         const transactionId = await actions.order.create({
             purchase_units: [
                 {
+                    invoice_id: orderId,
                     amount: {
                         value: `${ roundedAmount }`,
                         currency_code: 'USD'
@@ -44,17 +45,15 @@ export const PayPalButton = ({ orderId, amount }:Props) => {
         console.log({ transactionId });
         // TODO: guardar el id en la orden en la bd
         const { ok } = await setTransactionId( transactionId, orderId );
-        // if (!ok){
-        //     throw new Error('No se pude realizar la transacción')
-        // };
+        if (!ok){
+            throw new Error('No se pude realizar la transacción')
+        };
 
 
         return transactionId
     };
 
     const onApprove = async(data: OnApproveData, actions: OnApproveActions) => {
-      
-        console.log("onApprove");
         
 
         const details = await actions.order?.capture();

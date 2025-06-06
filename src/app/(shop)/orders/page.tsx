@@ -75,7 +75,7 @@ export default async function OrderPage() {
 
                 </tr>
               ))
-            };
+            }
 
           </tbody>
         </table>
