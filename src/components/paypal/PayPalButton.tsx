@@ -12,11 +12,11 @@ interface Props {
     amount: number;
 }
 
-export const PayPalButton = ({ orderId, amount }:Props) => {
+export const PayPalButton = ({ orderId, amount }: Props) => {
 
     const [{ isPending }] = usePayPalScriptReducer();
 
-    const roundedAmount = ( Math.round(amount * 100)) / 100 
+    const roundedAmount = (Math.round(amount * 100)) / 100
 
     if (isPending) {
         return (
@@ -34,7 +34,7 @@ export const PayPalButton = ({ orderId, amount }:Props) => {
                 {
                     invoice_id: orderId,
                     amount: {
-                        value: `${ roundedAmount }`,
+                        value: `${roundedAmount}`,
                         currency_code: 'USD'
                     }
                 }
@@ -44,8 +44,8 @@ export const PayPalButton = ({ orderId, amount }:Props) => {
 
         console.log({ transactionId });
         // TODO: guardar el id en la orden en la bd
-        const { ok } = await setTransactionId( transactionId, orderId );
-        if (!ok){
+        const { ok } = await setTransactionId(transactionId, orderId);
+        if (!ok) {
             throw new Error('No se pude realizar la transacción')
         };
 
@@ -53,21 +53,23 @@ export const PayPalButton = ({ orderId, amount }:Props) => {
         return transactionId
     };
 
-    const onApprove = async(data: OnApproveData, actions: OnApproveActions) => {
-        
+    const onApprove = async (data: OnApproveData, actions: OnApproveActions) => {
+
 
         const details = await actions.order?.capture();
         if (!details) return;
 
-        await paypalCheckPayment( details.id )
+        await paypalCheckPayment(details.id)
 
     };
 
 
     return (
-        <PayPalButtons
-            createOrder={createOrder}
-            onApprove={ onApprove }
-        />
+        <div className='relative z-0'>
+            <PayPalButtons
+                createOrder={createOrder}
+                onApprove={onApprove}
+            />
+        </div>
     )
 }

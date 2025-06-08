@@ -22,10 +22,10 @@ export const getProductBySlug = async( slug: string ) => {
 
         if (!product) return null;
 
-        const { Image, ...rest } = product
+
 
         return {
-            ...rest,
+            ...product,
             images: product.Image.map( img => img.url )
         }
 
