@@ -14,8 +14,9 @@ export const authConfig: NextAuthConfig = {
 
     callbacks: {
 
+        // eslint-disable-next-line
         authorized({ auth, request: { nextUrl } }) {
-            console.log({auth});
+         
             
             // const isLoggedIn = !!auth?.user;
             // const isOnDashboard = nextUrl.pathname.startsWith('/dashboard');
@@ -35,9 +36,10 @@ export const authConfig: NextAuthConfig = {
 
             return token
         },
-        session({ session, token, user }) {
+        session({ session, token }) {
 
             // console.log({session, token, user});
+            // eslint-disable-next-line
             session.user = token.data as any
 
             return session
@@ -62,6 +64,7 @@ export const authConfig: NextAuthConfig = {
 
                 if (!bcryptjs.compareSync(password, user.password)) return null;
 
+                // eslint-disable-next-line
                 const { password: _, ...rest } = user
 
                 return rest;

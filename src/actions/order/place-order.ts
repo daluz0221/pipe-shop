@@ -155,10 +155,12 @@ export const placeOrder = async (productIds: ProductToOrder[], address: Address)
             order: prismaTx.order,
             prismaTx: prismaTx
         }
-    } catch (error: any) {
+    } catch (error) {
+        console.log(error);
+        
         return {
             ok: false,
-            message: error?.message
+            message: 'revisar los logs'
         }
     }
 

@@ -57,7 +57,7 @@ export const useCartStore = create<State>()(
 
             addProductToCart: (product: CartProduct) => {
                 const { cart } = get();
-                console.log(cart);
+       
                 // 1. Revisar si el productr existe en el cart con la talla selecioanda
                 const productInCart = cart.some(
                     (item) => item.id === product.id && item.size === product.size

@@ -42,7 +42,6 @@ export const PayPalButton = ({ orderId, amount }: Props) => {
             intent: 'CAPTURE'
         })
 
-        console.log({ transactionId });
         // TODO: guardar el id en la orden en la bd
         const { ok } = await setTransactionId(transactionId, orderId);
         if (!ok) {

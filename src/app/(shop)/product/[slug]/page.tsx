@@ -1,6 +1,6 @@
 export const revalidate = 120
 
-import { ProductMobileSlideshow, ProductSlideshow, QuantitySelector, SizeSelector, StockLabel } from "@/components";
+import { ProductMobileSlideshow, ProductSlideshow, StockLabel } from "@/components";
 import { titleFont } from "@/config/fonts";
 import { notFound } from "next/navigation";
 import { getProductBySlug } from '../../../../actions/products/get-product-by-slug';
@@ -17,7 +17,8 @@ interface Props {
 
 export async function generateMetadata(
   { params }: Props,
-  parent: ResolvingMetadata
+  // eslint-disable-next-line
+  _: ResolvingMetadata
 ): Promise<Metadata> {
   const slug = (await params).slug
  

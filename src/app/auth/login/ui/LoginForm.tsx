@@ -12,7 +12,7 @@ export const LoginForm = () => {
     // const router = useRouter()
     const [state, dispatch] = React.useActionState(authenticate, undefined);
 
-    console.log({state});
+
     
 
     useEffect(() => {

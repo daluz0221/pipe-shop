@@ -1,4 +1,3 @@
-export const validate = 0
 
 // https://tailwindcomponents.com/component/hoverable-table
 import { getOrderByUser } from '@/actions';

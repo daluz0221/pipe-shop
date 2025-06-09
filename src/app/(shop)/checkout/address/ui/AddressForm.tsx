@@ -33,7 +33,7 @@ export const AddressForm = ({ countries, storeAddress, userStoreAddress = {} }:P
     const { handleSubmit, register, formState: { isValid }, reset } = useForm<FormInputs>({
         defaultValues: {
             // TODO: leer de la base de datos
-            ...(userStoreAddress as any),
+            ...userStoreAddress,
             rememberAddress: false
         }
     });
@@ -49,20 +49,21 @@ export const AddressForm = ({ countries, storeAddress, userStoreAddress = {} }:P
 
     useEffect(() => {
         
-        console.log(storeAddress);
+        
         
         
       if( storeAddress?.firsName ){
         reset( storeAddress );
 
       }
-    }, [])
+    }, [reset, storeAddress])
     
 
 
     const onSubmit = async( data: FormInputs ) => {
       console.log(data.rememberAddress);
       
+      // eslint-disable-next-line
       const { rememberAddress, ...restAddress } = data
       setAddress( restAddress );
 

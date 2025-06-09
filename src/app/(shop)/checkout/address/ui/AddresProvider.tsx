@@ -18,8 +18,7 @@ export default function AddresProvider({ countries, userStoreAddress = {} }:Prop
      const hasHydrated = useHydratedAddress();
 
      if (!hasHydrated) return <p>Cargando...</p>;
-     console.log(storeAddress);
-     console.log('storeAddress');
+
      
     
 

@@ -1,19 +1,16 @@
 'use client';
 
-import { QuantitySelector } from "@/components";
+import { ProductImage, QuantitySelector } from "@/components";
 import { useHydratedCart } from "@/config";
 import { useCartStore } from "@/store";
-import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { useState } from "react";
 
 
 
 export const ProductsInCart = () => {
 
 
-    const [loaded, setLoaded] = useState(false);
     const productsInCart = useCartStore( state => state.cart );
     const updateProductQuantity = useCartStore( state => state.updateProductQuantity );
     const deleteProduct = useCartStore( state => state.deleteProductQuantity );
@@ -35,8 +32,8 @@ export const ProductsInCart = () => {
             {
             productsInCart.map((product) => (
                 <div className="flex mb-5" key={`${ product.slug }-${product.size}`}>
-                    <Image
-                        src={`/products/${product.image}`}
+                    <ProductImage
+                        src={product.image}
                         width={100}
                         height={100}
                         style={{

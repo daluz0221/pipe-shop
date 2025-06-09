@@ -45,18 +45,15 @@ export const PlaceOrder = () => {
         const resp = await placeOrder(productsToOder, address);
         if (!resp.ok) {
             setIsPlacingOrder(false);
-            setErrorMessage(resp.message);
+            setErrorMessage(resp.message!);
             return;
         }
 
         // * Todo salió bien
-        console.log('llego aca');
+
 
         clearCart();
-        console.log('y aca');
         window.location.replace('/orders/' + resp.order!.id);
-
-        console.log('aca igualñ');
 
 
 

@@ -24,6 +24,7 @@ interface State {
 
 export const useAddressStore = create<State>()(
     persist(
+        // eslint-disable-next-line
         (set, get) => ({
             address: {
                 firsName: '',

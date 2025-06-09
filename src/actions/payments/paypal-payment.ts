@@ -10,7 +10,6 @@ export const paypalCheckPayment = async (transactionId: string | undefined) => {
 
     const authToken = await getPaypalBareToken();
 
-    console.log(authToken);
 
     if (!authToken) {
         return {

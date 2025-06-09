@@ -18,7 +18,7 @@ export default async function GenderPage({params, searchParams}:Props){
   const { gender } = await params;
     const { page: pageParams} = await searchParams
     const page = pageParams ? parseInt( pageParams ) : 1
-    console.log({gender});
+
     
   
   // const products = initialData.products.filter( product => product.gender === id || product.gender === 'unisex' ) 

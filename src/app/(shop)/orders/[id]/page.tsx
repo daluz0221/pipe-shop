@@ -1,18 +1,11 @@
 import { getOrderById } from "@/actions";
 import { OrderStatus, PayPalButton, Title } from "@/components";
-import { initialData } from "@/seed/seed";
-import clsx from "clsx";
 import Image from "next/image";
 import { redirect } from "next/navigation";
-import { IoCartOutline } from "react-icons/io5";
 import { currencyFormat } from "@/utils";
 
 
-const productsInCart = [
-  initialData.products[0],
-  initialData.products[1],
-  initialData.products[2],
-]
+
 
 interface Props {
   params: Promise<{

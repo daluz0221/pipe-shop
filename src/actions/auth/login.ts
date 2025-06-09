@@ -22,7 +22,7 @@ export async function authenticate(
         return 'Success'
      
     } catch (error) {
-        if ((error as any).type === 'CredentialsSignin'){
+        if (error){
             return 'CredentialsSignin'
         }
         // if ((error as Error).message.includes('CredentialsSignin')){

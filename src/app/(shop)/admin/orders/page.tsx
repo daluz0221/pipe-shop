@@ -1,4 +1,4 @@
-export const validate = 0
+export const revalidate = 0
 
 // https://tailwindcomponents.com/component/hoverable-table
 import { getPaginatedOrders } from '@/actions';
